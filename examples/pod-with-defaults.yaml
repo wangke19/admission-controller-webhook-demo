@@ -11,5 +11,5 @@ spec:
   restartPolicy: OnFailure
   containers:
     - name: busybox
-      image: busybox
+      image: quay.io/quay/busybox
       command: ["sh", "-c", "echo I am running as user $(id -u)"]

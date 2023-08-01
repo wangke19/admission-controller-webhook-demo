@@ -12,7 +12,7 @@ is applied, and the user ID defaults to `1234`.
 ## Prerequisites
 
 A cluster on which this example can be tested must be running Kubernetes 1.9.0 or above,
-with the `admissionregistration.k8s.io/v1beta1` API enabled. 
+with the `admissionregistration.k8s.io/v1` API enabled. 
 To create one cluster with admission-plugins, try,
 ```
 kind create cluster --config kind-admission-plugins.yaml
@@ -21,7 +21,7 @@ export KUBECONFIG=$HOME/.kube/config
 
 You can verify that by observing that the following command produces a non-empty output:
 ```
-kubectl api-versions | grep admissionregistration.k8s.io/v1beta1
+kubectl api-versions | grep admissionregistration.k8s.io/v1
 ```
 In addition, the `MutatingAdmissionWebhook` admission controller should be added and listed in the admission-control
 flag of `kube-apiserver`.
