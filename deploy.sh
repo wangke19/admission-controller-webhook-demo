@@ -18,7 +18,15 @@
 #
 # Sets up the environment for the admission controller webhook demo in the active cluster.
 
+cleanup(){
+    oc delete service/webhook-server -n webhook-demo 
+    oc delete deployment.apps/webhook-server -n webhook-demo
+    oc delete secret/webhook-server-tls -n webhook-demo 
+    oc delete  namespace webhook-demo 
+}
 set -euo pipefail
+
+[ "${1}" == "-c" ] && cleanup
 
 basedir="$(dirname "$0")/deployment"
 keydir="$(mktemp -d)"
@@ -40,8 +48,8 @@ kubectl -n webhook-demo create secret tls webhook-server-tls \
 # Read the PEM-encoded CA certificate, base64 encode it, and replace the `${CA_PEM_B64}` placeholder in the YAML
 # template with it. Then, create the Kubernetes resources.
 ca_pem_b64="$(openssl base64 -A <"${keydir}/ca.crt")"
-sed -e 's@${CA_PEM_B64}@'"$ca_pem_b64"'@g' <"${basedir}/deployment.yaml.template" \
-    | kubectl create -f -
+sed 's@${CA_PEM_B64}@'"$ca_pem_b64"'@g' "${basedir}/deployment.yaml.template" > deployment.yaml
+kubectl create -f deployment.yaml
 
 # Delete the key directory to prevent abuse (DO NOT USE THESE KEYS ANYWHERE ELSE).
 rm -rf "$keydir"
