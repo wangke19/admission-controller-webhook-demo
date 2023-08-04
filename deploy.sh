@@ -19,13 +19,11 @@
 # Sets up the environment for the admission controller webhook demo in the active cluster.
 
 cleanup(){
-    oc delete -f examples/pod-with-defaults.yaml
-    oc delete -f examples/pod-with-override.yaml
-    oc delete mutatingwebhookconfigurations demo-webhook
-    oc delete service/webhook-server -n webhook-demo 
-    oc delete deployment.apps/webhook-server -n webhook-demo
-    oc delete secret/webhook-server-tls -n webhook-demo 
-    oc delete  namespace webhook-demo 
+    kubectl delete mutatingwebhookconfigurations demo-webhook
+    kubectl delete service/webhook-server -n webhook-demo 
+    kubectl delete deployment.apps/webhook-server -n webhook-demo
+    kubectl delete secret/webhook-server-tls -n webhook-demo 
+    kubectl delete namespace webhook-demo 
 }
 set -euo pipefail
 
